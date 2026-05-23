@@ -3,73 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kigali Population Heatmap</title>
+    <title>Kigali Population Heatmap - 2022 Census</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-    <style>
-        body { margin: 0; }
-        #map { height: 100vh; width: 100%; }
-    </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-brand">SGE4165 &mdash; Web Based Mapping</div>
+        <div class="nav-links">
+            <a href="index.html">Cadastral Parcels</a>
+            <a href="heatmap.html" class="active">Population Heatmap</a>
+        </div>
+    </nav>
+
+    <div class="description">
+        <p>This heatmap visualizes <strong>population density across Kigali's 35 sectors</strong> using data from the 2022 Rwanda Population and Housing Census. The intensity at each point is scaled by population density (population &divide; area in km&sup2;). Red zones indicate the most densely populated urban centers. Click on the dots to view sector details.</p>
+    </div>
+
     <div id="map"></div>
+
     <script>
         var map = L.map('map').setView([-1.9500, 30.0600], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
         // [latitude, longitude, density (population / area_km2)]
         var heatData = [
-            [-1.8650, 30.1350, 2171],   // Bumbogo
-            [-1.9100, 30.0900, 4644],   // Kinyinya
-            [-1.8900, 30.1700, 2025],   // Ndera
-            [-1.9178, 30.0613, 8309],   // Gisozi
-            [-1.8500, 30.1100, 1222],   // Nduba
-            [-1.8750, 30.0700, 1726],   // Jabana
-            [-1.8600, 30.1500, 1471],   // Rusororo
-            [-1.9400, 30.1000, 6498],   // Kimironko
-            [-1.9250, 30.0550, 5642],   // Gatsata
-            [-1.8800, 30.1900, 1372],   // Jali
-            [-1.9476, 30.1061, 5294],   // Remera
-            [-1.9380, 30.0800, 5179],   // Kacyiru
-            [-1.8450, 30.1600, 468],    // Rutunga
-            [-1.8550, 30.1250, 491],    // Gikomero
-            [-1.9400, 30.0850, 3221],   // Kimihurura
-            [-2.0200, 30.0700, 2197],   // Gahanga
-            [-2.0400, 30.1200, 2462],   // Masaka
-            [-1.9700, 30.1400, 4019],   // Kanombe
-            [-1.9700, 30.0700, 12197],  // Gatenga
-            [-1.9850, 30.1100, 4210],   // Kigarama
-            [-1.9600, 30.1050, 4104],   // Nyarugunga
-            [-1.9750, 30.0800, 3845],   // Niboye
-            [-1.9750, 30.0900, 3868],   // Kagarama
-            [-1.9600, 30.0650, 4951],   // Gikondo
-            [-1.9650, 30.0750, 4680],   // Kicukiro
-            [-1.9497, 30.0586, 2092],   // Kigali
-            [-2.0000, 30.0200, 1992],   // Mageragere
-            [-1.9525, 30.0403, 17131],  // Kimisagara
-            [-1.9650, 30.0400, 12292],  // Nyamirambo
-            [-1.9200, 30.0100, 1149],   // Kanyinya
-            [-1.9600, 30.0500, 11832],  // Nyakabanda
-            [-1.9450, 30.0350, 3334],   // Gitega
-            [-1.9500, 30.0600, 6437],   // Muhima
-            [-1.9672, 30.0556, 3623],   // Nyarugenge
-            [-1.9686, 30.0556, 14754]   // Rwezamenyo
+            [-1.8650, 30.1350, 2171],
+            [-1.9100, 30.0900, 4644],
+            [-1.8900, 30.1700, 2025],
+            [-1.9178, 30.0613, 8309],
+            [-1.8500, 30.1100, 1222],
+            [-1.8750, 30.0700, 1726],
+            [-1.8600, 30.1500, 1471],
+            [-1.9400, 30.1000, 6498],
+            [-1.9250, 30.0550, 5642],
+            [-1.8800, 30.1900, 1372],
+            [-1.9476, 30.1061, 5294],
+            [-1.9380, 30.0800, 5179],
+            [-1.8450, 30.1600, 468],
+            [-1.8550, 30.1250, 491],
+            [-1.9400, 30.0850, 3221],
+            [-2.0200, 30.0700, 2197],
+            [-2.0400, 30.1200, 2462],
+            [-1.9700, 30.1400, 4019],
+            [-1.9700, 30.0700, 12197],
+            [-1.9850, 30.1100, 4210],
+            [-1.9600, 30.1050, 4104],
+            [-1.9750, 30.0800, 3845],
+            [-1.9750, 30.0900, 3868],
+            [-1.9600, 30.0650, 4951],
+            [-1.9650, 30.0750, 4680],
+            [-1.9497, 30.0586, 2092],
+            [-2.0000, 30.0200, 1992],
+            [-1.9525, 30.0403, 17131],
+            [-1.9650, 30.0400, 12292],
+            [-1.9200, 30.0100, 1149],
+            [-1.9600, 30.0500, 11832],
+            [-1.9450, 30.0350, 3334],
+            [-1.9500, 30.0600, 6437],
+            [-1.9672, 30.0556, 3623],
+            [-1.9686, 30.0556, 14754]
         ];
 
-        // Normalize density values to 0-1 range
+        var sectorInfo = [
+            {name:"Bumbogo",district:"Gasabo",pop:112899,area:52.0},
+            {name:"Kinyinya",district:"Gasabo",pop:125400,area:27.0},
+            {name:"Ndera",district:"Gasabo",pop:95164,area:47.0},
+            {name:"Gisozi",district:"Gasabo",pop:75611,area:9.1},
+            {name:"Nduba",district:"Gasabo",pop:68424,area:56.0},
+            {name:"Jabana",district:"Gasabo",pop:63862,area:37.0},
+            {name:"Rusororo",district:"Gasabo",pop:61787,area:42.0},
+            {name:"Kimironko",district:"Gasabo",pop:61733,area:9.5},
+            {name:"Gatsata",district:"Gasabo",pop:46262,area:8.2},
+            {name:"Jali",district:"Gasabo",pop:41156,area:30.0},
+            {name:"Remera",district:"Gasabo",pop:38648,area:7.3},
+            {name:"Kacyiru",district:"Gasabo",pop:30036,area:5.8},
+            {name:"Rutunga",district:"Gasabo",pop:22468,area:48.0},
+            {name:"Gikomero",district:"Gasabo",pop:19630,area:40.0},
+            {name:"Kimihurura",district:"Gasabo",pop:16425,area:5.1},
+            {name:"Gahanga",district:"Kicukiro",pop:79082,area:36.0},
+            {name:"Masaka",district:"Kicukiro",pop:78788,area:32.0},
+            {name:"Kanombe",district:"Kicukiro",pop:72346,area:18.0},
+            {name:"Gatenga",district:"Kicukiro",pop:67084,area:5.5},
+            {name:"Kigarama",district:"Kicukiro",pop:63153,area:15.0},
+            {name:"Nyarugunga",district:"Kicukiro",pop:49247,area:12.0},
+            {name:"Niboye",district:"Kicukiro",pop:26912,area:7.0},
+            {name:"Kagarama",district:"Kicukiro",pop:21277,area:5.5},
+            {name:"Gikondo",district:"Kicukiro",pop:19803,area:4.0},
+            {name:"Kicukiro",district:"Kicukiro",pop:14039,area:3.0},
+            {name:"Kigali",district:"Nyarugenge",pop:61499,area:29.4},
+            {name:"Mageragere",district:"Nyarugenge",pop:59747,area:30.0},
+            {name:"Kimisagara",district:"Nyarugenge",pop:56534,area:3.3},
+            {name:"Nyamirambo",district:"Nyarugenge",pop:55315,area:4.5},
+            {name:"Kanyinya",district:"Nyarugenge",pop:31026,area:27.0},
+            {name:"Nyakabanda",district:"Nyarugenge",pop:29580,area:2.5},
+            {name:"Gitega",district:"Nyarugenge",pop:26668,area:8.0},
+            {name:"Muhima",district:"Nyarugenge",pop:22531,area:3.5},
+            {name:"Nyarugenge",district:"Nyarugenge",pop:16665,area:4.6},
+            {name:"Rwezamenyo",district:"Nyarugenge",pop:14754,area:1.0}
+        ];
+
         var maxDensity = Math.max(...heatData.map(d => d[2]));
         var normalized = heatData.map(d => [d[0], d[1], d[2] / maxDensity]);
 
-        // Create heatmap
-        L.heatLayer(normalized, {
-            radius: 35,
-            blur: 25,
-            maxZoom: 14
-        }).addTo(map);
+        L.heatLayer(normalized, { radius: 35, blur: 25, maxZoom: 14 }).addTo(map);
+
+        heatData.forEach(function(d, i) {
+            var s = sectorInfo[i];
+            L.circleMarker([d[0], d[1]], {
+                radius: 4, fillColor: '#333', color: '#fff', weight: 1, fillOpacity: 0.8
+            }).addTo(map).bindPopup(
+                '<div style="font-size:13px;">' +
+                '<b>' + s.name + '</b> (' + s.district + ')<br>' +
+                '<b>Population:</b> ' + s.pop.toLocaleString() + '<br>' +
+                '<b>Area:</b> ' + s.area + ' km&sup2;<br>' +
+                '<b>Density:</b> ' + d[2].toLocaleString() + ' people/km&sup2;' +
+                '</div>'
+            );
+        });
+
+        // Legend
+        var legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function() {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML =
+                '<h4>Population Density</h4>' +
+                '<div class="gradient-bar"></div>' +
+                '<div class="gradient-labels"><span>Low</span><span>High</span></div>';
+            return div;
+        };
+        legend.addTo(map);
     </script>
 </body>
 </html>
